@@ -184,10 +184,23 @@ docs/
 
 ## 打包
 
+`electron-builder` 已列入 `devDependencies`，克隆后 `npm install` 会自动装好：
+
 ```bash
-npm i -D electron-builder
 npm run build          # 产出 Windows x64 安装包到 dist/
+npm run build:dir      # 只解包不压缩，用于快速验证打包结果（快很多）
 ```
+
+产物：
+
+- `dist/SkillHub-1.0.0-x64.exe` —— NSIS 安装包（可选安装目录、创建桌面与开始菜单快捷方式、支持卸载）
+- `dist/SkillHub-1.0.0-portable.exe` —— 免安装绿色版，双击即用
+
+打包配置写在 `package.json` 的 `build` 段（appId / 产品名 / 目标格式 / NSIS 选项）。
+应用图标为 `build/icon.png`（512×512，electron-builder 会自动生成各尺寸 `.ico`）。
+
+> 国内网络下首次打包需下载 electron 二进制与 NSIS 工具，可能较慢。
+> 可先设镜像：`export ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/`。
 
 ## 在线市场数据维护
 

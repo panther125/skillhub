@@ -1,10 +1,10 @@
 # 依赖
 node_modules/
 
-# 构建产物
+# 构建产物（注意：build/ 是打包资源目录，放应用图标，必须提交，不要忽略）
 dist/
 out/
-build/
+release/
 
 # 日志
 *.log

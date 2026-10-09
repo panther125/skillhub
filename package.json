@@ -10,9 +10,51 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "smoke": "electron . --smoke --disable-gpu --in-process-gpu",
-    "build": "electron-builder --win --x64"
+    "build": "electron-builder --win --x64",
+    "build:dir": "electron-builder --win --x64 --dir"
   },
   "devDependencies": {
-    "electron": "^44.6.0"
+    "electron": "^44.6.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.panther125.skillhub",
+    "productName": "SkillHub",
+    "copyright": "Copyright © 2026 panther125",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/.tmp-*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SkillHub",
+      "deleteAppDataOnUninstall": false
+    }
   }
 }
