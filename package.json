@@ -1,0 +1,18 @@
+{
+  "name": "skillhub",
+  "version": "1.0.0",
+  "description": "SkillHub · 本地 Skill 统一管理台（Electron 桌面端）",
+  "main": "src/main/index.js",
+  "author": "panther125",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "smoke": "electron . --smoke --disable-gpu --in-process-gpu",
+    "build": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "^44.6.0"
+  }
+}

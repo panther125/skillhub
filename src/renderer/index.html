@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:" />
+<title>SkillHub · 本地 Skill 统一管理台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="win-wrap">
+  <!-- 自定义标题栏（无边框窗口） -->
+  <header class="titlebar">
+    <div class="tb-brand"><i class="ico" data-icon="layers"></i><span>SkillHub</span></div>
+    <div class="tb-tabs" id="viewTabs">
+      <button class="tb-tab" data-view="ds">00 设计系统</button>
+      <button class="tb-tab active" data-view="lib">01 Skill 库</button>
+      <button class="tb-tab" data-view="edit">02 编辑器</button>
+      <button class="tb-tab" data-view="scan">03 扫描与冲突</button>
+      <button class="tb-tab" data-view="rec">04 Skill 推荐</button>
+    </div>
+    <div class="tb-drag"></div>
+    <span class="tb-meta" id="tbMeta">扫描中…</span>
+    <div class="win-btns">
+      <button class="win-btn" id="btnMin" title="最小化"><i class="ico" data-icon="minus"></i></button>
+      <button class="win-btn" id="btnMax" title="最大化"><i class="ico" data-icon="square"></i></button>
+      <button class="win-btn close" id="btnClose" title="关闭"><i class="ico" data-icon="x"></i></button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+  <div class="app-window" id="appWindow">
+
+    <!-- ================= 00 设计系统 ================= -->
+    <section class="view" id="view-ds">
+      <div class="screen ds-screen">
+        <div class="ds-wrap">
+          <div class="ds-head">
+            <div class="ds-title">SkillHub · 设计系统</div>
+            <div class="ds-sub">本地 Skill 统一管理台 · Design Tokens v1.0 · 深色优先 Dark-First</div>
+          </div>
+          <div class="h-div"></div>
+          <div class="ds-cols">
+            <div class="ds-col">
+              <div class="ds-sec">
+                <div class="ds-sec-title">色彩令牌 Color Tokens</div>
+                <div class="ds-label">表面层级 Surface</div>
+                <div class="grid" id="dsSurface"></div>
+                <div class="ds-label">边框 Border</div>
+                <div class="grid" id="dsBorder"></div>
+                <div class="ds-label">文本 Text</div>
+                <div class="grid" id="dsText"></div>
+                <div class="ds-label">强调与语义 Accent / Semantic</div>
+                <div class="grid" id="dsSem"></div>
+                <div class="ds-label">来源平台色 Platform（用于来源标识）</div>
+                <div class="grid" id="dsPlat"></div>
+              </div>
+            </div>
+            <div class="ds-col">
+              <div class="ds-sec">
+                <div class="ds-sec-title">字体排印 Typography</div>
+                <div id="typeRows"></div>
+              </div>
+              <div class="ds-sec">
+                <div class="ds-sec-title">间距与圆角 Spacing / Radius</div>
+                <div id="spaceRows"></div>
+                <div class="grid" id="radiusGrid"></div>
+              </div>
+              <div class="ds-sec">
+                <div class="ds-sec-title">基础组件 Components</div>
+                <div class="comp-label">按钮 Button · 32px</div>
+                <div class="comp-row">
+                  <div class="btn btn-primary"><i class="ico" data-icon="plus"></i>新建 Skill</div>
+                  <div class="btn btn-secondary"><i class="ico" data-icon="refresh"></i>重新扫描</div>
+                  <div class="btn btn-ghost">取消</div>
+                  <div class="btn btn-danger"><i class="ico" data-icon="trash"></i>删除</div>
+                </div>
+                <div class="comp-label">输入框 Input · 32px</div>
+                <div class="comp-row">
+                  <div class="input"><i class="ico" data-icon="search"></i><span class="ph">搜索 Skill 名称、描述或路径</span></div>
+                  <div class="input input-focus"><i class="ico" data-icon="search"></i><span class="val">pdf</span><span class="kbd">Cmd K</span></div>
+                </div>
+                <div class="comp-label">开关 Switch · 启用 / 停用 Skill</div>
+                <div class="comp-row">
+                  <div class="switch"><div class="knob"></div></div>
+                  <div class="switch on"><div class="knob"></div></div>
+                </div>
+                <div class="comp-label">分段控件 Segmented · 状态筛选</div>
+                <div class="comp-row">
+                  <div class="seg">
+                    <div class="seg-item active">全部 128</div>
+                    <div class="seg-item">已启用 96</div>
+                    <div class="seg-item">已停用 32</div>
+                  </div>
+                </div>
+                <div class="comp-label">状态徽章 Badge</div>
+                <div class="comp-row">
+                  <span class="badge badge-success">已同步</span>
+                  <span class="badge badge-warning">待更新</span>
+                  <span class="badge badge-danger">命名冲突</span>
+                  <span class="badge badge-accent">用户级</span>
+                  <span class="badge badge-neutral">只读</span>
+                </div>
+                <div class="comp-label">来源标签 Source Chip · 平台色点 + 名称</div>
+                <div class="comp-row">
+                  <span class="chip"><span class="dot" style="background:#D97757"></span>Claude</span>
+                  <span class="chip"><span class="dot" style="background:#5E6AD2"></span>WorkBuddy</span>
+                  <span class="chip"><span class="dot" style="background:#22D3EE"></span>CodeBuddy</span>
+                  <span class="chip"><span class="dot" style="background:#71717A"></span>项目级</span>
+                </div>
+                <div class="comp-label">列表行 List Row · 选中态</div>
+                <div class="skill-row selected" style="border-radius:8px">
+                  <i class="ico sr-icon" data-icon="package"></i>
+                  <div class="sr-body">
+                    <div class="sr-title"><span class="sr-name">pdf-extract</span></div>
+                    <div class="sr-desc">从 PDF 抽取文本与表格，输出结构化 Markdown</div>
+                  </div>
+                  <div class="switch on"><div class="knob"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 01 Skill 库总览 ================= -->
+    <section class="view active" id="view-lib">
+      <div class="screen">
+        <header class="topbar">
+          <div class="tb-logo"><i class="ico" data-icon="package"></i><span class="tb-logo-text">SkillHub</span></div>
+          <span class="tb-crumb" id="crumb">/&nbsp;&nbsp;全部 Skill</span>
+          <div class="tb-search">
+            <i class="ico" data-icon="search"></i>
+            <input id="globalSearch" class="tb-search-input" placeholder="搜索 Skill、目录或路径" />
+            <span class="kbd">Cmd K</span>
+          </div>
+          <div class="tb-spacer"></div>
+          <div class="btn btn-secondary js-theme-btn" title="外观设置 · 主题 / 强调色 / 字体大小"><i class="ico" data-icon="palette"></i>外观设置</div>
+          <div class="btn btn-secondary" id="rescanBtn"><i class="ico" data-icon="refresh"></i>重新扫描</div>
+          <div class="btn btn-secondary" id="addDirBtn"><i class="ico" data-icon="plus"></i>添加目录</div>
+          <div class="btn btn-primary" id="newSkillBtn"><i class="ico" data-icon="sparkle"></i>新建 Skill</div>
+          <div class="avatar">H</div>
+        </header>
+        <div class="h-div"></div>
+
+        <div class="body-row">
+          <aside class="sidebar">
+            <div class="group-label">概览</div>
+            <nav class="nav-group" id="overviewNav">
+              <div class="nav-row active" data-filter="all"><span>全部 Skill</span><span class="nav-count" id="cntAll">0</span></div>
+              <div class="nav-row" data-filter="on"><span>已启用</span><span class="nav-count" id="cntOn">0</span></div>
+              <div class="nav-row" data-filter="off"><span>已停用</span><span class="nav-count" id="cntOff">0</span></div>
+              <div class="nav-row" data-filter="conflict"><span class="dot" style="background:#F59E0B"></span><span>冲突与重复</span><span class="nav-count warn" id="cntConflict">0</span></div>
+            </nav>
+            <div class="h-div"></div>
+            <div class="group-label">数据来源 SOURCES</div>
+            <nav class="nav-group" id="sourceNav"></nav>
+          </aside>
+          <div class="resizer" data-pane="sidebar" title="拖动调整宽度 · 双击复位"></div>
+
+          <div class="list-col">
+            <div class="filter-bar">
+              <div class="seg" id="statusSeg">
+                <div class="seg-item active" data-filter="all">全部</div>
+                <div class="seg-item" data-filter="on">已启用</div>
+                <div class="seg-item" data-filter="off">已停用</div>
+                <div class="seg-item" data-filter="conflict">冲突</div>
+              </div>
+              <div class="fb-spacer"></div>
+              <div class="btn btn-secondary btn-sm"><i class="ico" data-icon="sliders"></i>最近更新<i class="ico" data-icon="chevronDown"></i></div>
+              <div class="icon-btn" id="openFolderBtn" title="在资源管理器中打开"><i class="ico" data-icon="folder"></i></div>
+            </div>
+            <div class="skill-list" id="skillList"></div>
+          </div>
+          <div class="resizer" data-pane="aside" title="拖动调整宽度 · 双击复位"></div>
+
+          <aside class="inspector" id="inspector"></aside>
+        </div>
+
+        <div class="h-div"></div>
+        <footer class="statusbar">
+          <span id="statusCount">就绪</span>
+          <span class="fb-spacer"></span>
+          <span id="statusScan">—</span>
+          <span class="dot" style="background:#10B981"></span>
+          <span class="ok-text">本地目录监听启用</span>
+        </footer>
+      </div>
+    </section>
+
+    <!-- ================= 02 Skill 编辑器 ================= -->
+    <section class="view" id="view-edit">
+      <div class="screen">
+        <header class="topbar">
+          <div class="tb-logo"><i class="ico" data-icon="package"></i><span class="tb-logo-text">SkillHub</span></div>
+          <span class="tb-crumb mono" id="editCrumb">/&nbsp; 未打开文件</span>
+          <span class="badge badge-warning" id="dirtyBadge" style="display:none">未保存更改</span>
+          <div class="tb-spacer"></div>
+          <div class="seg" id="editSeg">
+            <div class="seg-item active" data-mode="edit">编辑</div>
+            <div class="seg-item" data-mode="preview">预览</div>
+          </div>
+          <div class="btn btn-secondary btn-sm js-theme-btn" title="外观设置 · 主题 / 强调色 / 字体大小"><i class="ico" data-icon="palette"></i>外观设置</div>
+          <div class="btn btn-secondary btn-sm" id="revealBtn"><i class="ico" data-icon="folder"></i>所在目录</div>
+          <div class="btn btn-primary" id="saveBtn">保存 · Cmd S</div>
+        </header>
+        <div class="h-div"></div>
+
+        <div class="body-row">
+          <aside class="sidebar">
+            <div class="group-label">当前 Skill</div>
+            <nav class="nav-group" id="editSkillNav"></nav>
+            <div class="h-div"></div>
+            <div class="group-label">文件 FILES</div>
+            <nav class="nav-group" id="editFileNav"></nav>
+          </aside>
+          <div class="resizer" data-pane="sidebar" title="拖动调整宽度 · 双击复位"></div>
+
+          <div class="ed-col">
+            <div class="tabbar">
+              <div class="tab active"><i class="ico" data-icon="fileText"></i><span class="mono" id="editTabName">SKILL.md</span></div>
+              <div class="fb-spacer"></div>
+              <span class="tab-info mono" id="editFileInfo">Markdown · UTF-8</span>
+            </div>
+            <div class="editor" id="editor"></div>
+            <div class="editor-status">
+              <span class="mono" id="edPos">—</span>
+              <span class="fb-spacer"></span>
+              <span id="edValidate" class="ok-text">—</span>
+            </div>
+          </div>
+          <div class="resizer" data-pane="aside" title="拖动调整宽度 · 双击复位"></div>
+
+          <aside class="preview">
+            <div class="pv-tabs">
+              <div class="pv-tab active">预览</div>
+              <div class="pv-tab">校验<span class="mini-badge ok" id="checkBadge">0</span></div>
+              <div class="pv-tab">变更<span class="mini-badge warn" id="changeBadge">0</span></div>
+            </div>
+            <div class="h-div"></div>
+            <div class="pv-body" id="pvBody"></div>
+            <div class="h-div"></div>
+            <div class="pv-foot">
+              <span class="warn-text" id="pvChangeInfo">无未保存更改</span>
+              <span class="fb-spacer"></span>
+              <div class="btn btn-ghost" id="discardBtn">放弃</div>
+              <div class="btn btn-primary" id="saveBtn2">保存</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03 扫描与冲突 ================= -->
+    <section class="view" id="view-scan">
+      <div class="screen">
+        <header class="page-head">
+          <div class="page-title-g">
+            <div class="page-title">扫描与冲突检测</div>
+            <div class="page-sub mono" id="scanSub">尚未扫描</div>
+          </div>
+          <div class="fb-spacer"></div>
+          <div class="btn btn-secondary js-theme-btn" title="外观设置 · 主题 / 强调色 / 字体大小"><i class="ico" data-icon="palette"></i>外观设置</div>
+          <div class="btn btn-secondary" id="rescanBtn2"><i class="ico" data-icon="refresh"></i>重新扫描</div>
+        </header>
+        <div class="s3-body">
+          <div class="stat-row" id="statRow"></div>
+          <div id="conflictList"></div>
+          <div class="log-card">
+            <div class="log-title">扫描日志</div>
+            <div id="scanLog"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 04 Skill 推荐（在线 Skill 市场） ================= -->
+    <section class="view" id="view-rec">
+      <div class="screen">
+        <header class="page-head">
+          <div class="page-title-g">
+            <div class="page-title">Skill 推荐 · 在线 Skill 市场</div>
+            <div class="page-sub">精选社区常用的 Agent Skill / Claude Skill 聚合站，点击卡片用系统浏览器打开</div>
+          </div>
+          <div class="fb-spacer"></div>
+          <div class="rec-search">
+            <i class="ico" data-icon="search"></i>
+            <input id="recSearchInput" class="rec-search-input" placeholder="按名称 / 标签 / 简介筛选" />
+          </div>
+          <div class="btn btn-secondary js-theme-btn" title="外观设置 · 主题 / 强调色 / 字体大小"><i class="ico" data-icon="palette"></i>外观设置</div>
+        </header>
+        <div class="h-div"></div>
+        <div class="rec-toolbar">
+          <div class="seg" id="recCatSeg"></div>
+          <div class="fb-spacer"></div>
+          <span class="rec-count mono" id="recCount">—</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-grid" id="recGrid"></div>
+          <div class="rec-foot">
+            <i class="ico" data-icon="alert"></i>
+            <span>这些站点由社区维护，与本项目无隶属关系；安装第三方 Skill 前请先审查其 SKILL.md 与脚本内容。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  </div>
+</div>
+
+<!-- 外观设置面板（主题 / 强调色 / 字体大小） -->
+<div class="modal-mask" id="appearanceModal">
+  <div class="modal ap-modal">
+    <div class="modal-head">
+      <i class="ico" data-icon="palette"></i><span>外观设置</span>
+      <span class="fb-spacer"></span>
+      <div class="icon-btn" id="apClose"><i class="ico" data-icon="x"></i></div>
+    </div>
+    <div class="h-div"></div>
+    <div class="ap-body">
+      <div class="ap-sec">
+        <div class="ap-title">主题<span class="ap-val" id="themeVal">午夜 Midnight</span></div>
+        <div class="ap-desc">渐变主题会渲染成界面背景渐变，选中后立即生效</div>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+      <div class="h-div"></div>
+      <div class="ap-sec">
+        <div class="ap-title">强调色<span class="ap-val" id="accentVal">#5E6AD2</span></div>
+        <div class="ap-desc">覆盖当前主题主色，用于按钮、选中态与路径高亮</div>
+        <div class="accent-row" id="accentRow"></div>
+      </div>
+      <div class="h-div"></div>
+      <div class="ap-sec">
+        <div class="ap-title">字体大小<span class="ap-val" id="fsVal">100%</span></div>
+        <div class="ap-desc">整体缩放文字、行高与图标（85% – 135%）</div>
+        <div class="fs-row">
+          <span class="ap-desc">A</span>
+          <input type="range" id="fsRange" min="85" max="135" step="5" value="100" />
+          <span class="ap-desc" style="font-size:calc(16px * var(--fs-scale))">A</span>
+        </div>
+        <div class="fs-preview">
+          <div class="fsp-lg">Skill 库总览 · 217 个 Skill</div>
+          <div class="fsp-md">统一管理本机各 AI 客户端的 Skill 目录，支持预览与编辑</div>
+          <div class="fsp-sm">~/.claude/skills/pdf-extract/SKILL.md</div>
+        </div>
+      </div>
+    </div>
+    <div class="h-div"></div>
+    <div class="modal-foot">
+      <span class="modal-note">设置实时写入本地配置，下次启动自动恢复</span>
+      <span class="fb-spacer"></span>
+      <div class="btn btn-ghost" id="apReset">恢复默认</div>
+      <div class="btn btn-primary" id="apDone">完成</div>
+    </div>
+  </div>
+</div>
+
+<!-- 删除确认弹窗（安全二次确认） -->
+<div class="modal-mask" id="deleteModal">
+  <div class="modal">
+    <div class="modal-head"><i class="ico" data-icon="alert"></i><span>删除 Skill</span></div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <b>此操作非常危险，可能导致不可逆的数据丢失！</b>
+        <span>该 Skill 的整个目录（含 scripts/、参考文件等）将被移入系统回收站。删除前请确认已备份重要内容。</span>
+      </div>
+      <div class="modal-meta">
+        <div class="meta-row"><span class="meta-key">名称</span><span class="meta-val" id="delName">—</span></div>
+        <div class="meta-row"><span class="meta-key">来源</span><span class="meta-val" id="delSource">—</span></div>
+        <div class="meta-row"><span class="meta-key">规模</span><span class="meta-val mono" id="delSize">—</span></div>
+        <div class="meta-row"><span class="meta-key">路径</span><span class="modal-path" id="delPath">—</span></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="modal-note">移入回收站后可在回收站中还原</span>
+      <span class="fb-spacer"></span>
+      <div class="btn btn-ghost" id="delCancel">取消</div>
+      <div class="btn btn-danger" id="delConfirm"><i class="ico" data-icon="trash"></i>移到回收站</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ico" data-icon="check"></i><span id="toastText"></span></div>
+<script src="app.js"></script>
+</body>
+</html>
