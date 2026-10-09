@@ -36,12 +36,28 @@
 
 ## 下载与安装
 
-| 文件 | 说明 |
-|---|---|
-| `SkillHub Setup 1.0.0.exe` | **安装版**（推荐）—— 可选安装目录，自动创建桌面与开始菜单快捷方式，支持正常卸载 |
-| `SkillHub 1.0.0.exe` | **免安装绿色版** —— 双击即用，不写入系统，适合放 U 盘或临时试用 |
+| 文件 | 大小 | 说明 |
+|---|---|---|
+| `SkillHub Setup 1.0.0.exe` | 106.4 MB | **安装版**（推荐）—— 可选安装目录，自动创建桌面与开始菜单快捷方式，支持正常卸载 |
+| `SkillHub 1.0.0.exe` | 106.1 MB | **免安装绿色版** —— 双击即用，不写入系统，适合放 U 盘或临时试用 |
 
 **系统要求**：Windows 10 / 11（x64）
+
+<details>
+<summary>SHA256 校验值</summary>
+
+```
+588545208550e0d160b9e637b73b78442bc7edd94ac350bb12206065a8d02213  SkillHub 1.0.0.exe
+f0bb51677134a7b44a17113b8dd69f3a244c05f159e34e5fcc827710bdf4a937  SkillHub Setup 1.0.0.exe
+```
+
+校验命令（PowerShell）：
+
+```powershell
+Get-FileHash "SkillHub Setup 1.0.0.exe" -Algorithm SHA256
+```
+
+</details>
 
 > ⚠️ 本版本未做代码签名，Windows SmartScreen 可能提示「未知发布者」。
 > 点击「更多信息」→「仍要运行」即可。这是未签名应用的正常提示，非病毒告警。
